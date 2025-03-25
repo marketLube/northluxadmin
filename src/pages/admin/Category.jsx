@@ -24,7 +24,7 @@ function Category() {
   const [searchQuery, setSearchQuery] = useState("");
   const [loading, setLoading] = useState(false);
   const [showModal, setShowModal] = useState(false);
-  const [editingCategory, setEditingCategory] = useState(null);
+  const [editingCategory, setEditingCategory] = useState(false);
   const [formData, setFormData] = useState({
     name: "",
     description: "",

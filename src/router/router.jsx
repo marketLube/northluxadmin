@@ -13,7 +13,7 @@ import Homepage from "../pages/user/Homepage";
 import Category from "../pages/admin/Category";
 import Brand from "../pages/admin/Brand";
 import Label from "../pages/admin/Label";
-
+import Banner from "../pages/admin/Banner";
 export const router = createBrowserRouter([
   {
     path: "/",
@@ -71,6 +71,10 @@ export const router = createBrowserRouter([
       {
         path: "customer",
         element: <Customers />,
+      },
+      {
+        path: "banner",
+        element: <Banner />,
       },
     ],
   },

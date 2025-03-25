@@ -1,8 +1,7 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { Outlet, useNavigate } from "react-router-dom";
 import Logo from "../../components/Logo";
-import { adminLogout, checkAdmin } from "../../sevices/adminApis";
-import { toast } from "react-toastify";
+import { adminLogout } from "../../sevices/adminApis";
 function AdminLayout() {
   const menuItems = [
     { name: "Dashboard", path: "/admin" },
@@ -14,6 +13,7 @@ function AdminLayout() {
     { name: "Coupons", path: "coupon" },
     { name: "Reviews", path: "review" },
     { name: "Customers", path: "customer" },
+    { name: "Banners", path: "banner" },
   ];
   const navigate = useNavigate();
 
