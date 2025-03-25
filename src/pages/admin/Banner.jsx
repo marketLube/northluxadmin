@@ -2,7 +2,7 @@ import React, { useState, useRef } from "react";
 import PageHeader from "../../components/Admin/PageHeader";
 import { FaTrash, FaEdit, FaCamera } from "react-icons/fa";
 function Banner() {
-  const [showModal, setShowModal] = useState(true);
+  const [showModal, setShowModal] = useState(false);
   const [editingBanner, setEditingBanner] = useState(false);
   const [imagePreview, setImagePreview] = useState(null);
   const [parentCategories, setParentCategories] = useState([]);
@@ -21,6 +21,7 @@ function Banner() {
         <button
           className="block text-white bg-green-500 hover:bg-green-800  font-medium rounded-lg text-sm px-5 py-2.5 text-center ms-auto mb-2"
           type="button"
+          onClick={() => setShowModal(true)}
         >
           Add New Banner
         </button>
@@ -46,11 +47,11 @@ function Banner() {
           <tbody>
             <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 border-gray-200 hover:bg-gray-50 dark:hover:bg-gray-600">
               <td className="p-4">
-                <img
+                {/* <img
                   src="/images/images.jpg"
                   className="w-16 md:w-32 max-w-full max-h-full"
                   alt="Apple Watch"
-                />
+                /> */}
               </td>
               <td className="px-6 py-4 font-semibold text-gray-900 dark:text-white">
                 Apple Watch
@@ -58,9 +59,9 @@ function Banner() {
               <td className="px-6 py-4 font-semibold text-gray-900 dark:text-white">
                 $599
               </td>
-              <td className="px-6 py-4">
-                <FaTrash className="text-red-500" />
-                <FaEdit className="text-blue-500" />
+              <td className="px-6 py-4 font-semibold text-gray-900 dark:text-white flex gap-2 ">
+                <FaTrash className="text-red-500 text-lg" />
+                <FaEdit className="text-blue-500 text-lg" />
               </td>
             </tr>
           </tbody>
