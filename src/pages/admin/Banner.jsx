@@ -1,19 +1,123 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef,useEffect } from "react";
 import PageHeader from "../../components/Admin/PageHeader";
 import { FaTrash, FaEdit, FaCamera } from "react-icons/fa";
+import { toast } from "react-toastify";
+import { addBanner, deleteBanner, editBanner, getBanners } from "../../sevices/bannerApis";
 function Banner() {
   const [showModal, setShowModal] = useState(false);
-  const [editingBanner, setEditingBanner] = useState(false);
+  const [editingBanner, setEditingBanner] = useState(null);
   const [imagePreview, setImagePreview] = useState(null);
-  const [parentCategories, setParentCategories] = useState([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [formData, setFormData] = useState({
+    title: "",
+    bannerFor: "",
+    image: null,
+  });
   const fileInputRef = useRef(null);
+  const [banners, setBanners] = useState([]);
 
-  const handleImageClick = () => {};
-  const handleImageChange = () => {};
-  const handleSubmit = () => {};
-  const handleInputChange = () => {};
-  const handleCloseModal = () => {};
+  useEffect(() => {
+    fetchBanners();
+  }, []);
+
+  const fetchBanners = async () => {
+    try {
+      const response = await getBanners();
+      setBanners(response.data);
+    } catch (error) {
+      toast.error("Failed to fetch banners");
+    }
+  };
+
+  const handleImageClick = () => {
+    fileInputRef.current.click();
+  };
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setFormData((prev) => ({
+        ...prev,
+        image: file,
+      }));
+      setImagePreview(URL.createObjectURL(file));
+    }
+  };
+  const handleSubmit = async (e) => {
+    console.log(formData);
+    e.preventDefault();
+    setIsSubmitting(true);
+    try {
+      const formDataToSend = new FormData();
+      formDataToSend.append("title", formData.title);
+      formDataToSend.append("bannerFor", formData.bannerFor);
+
+      if (formData.image) {
+        formDataToSend.append("image", formData.image);
+      }
+      if (editingBanner) {
+        await editBanner(editingBanner._id, formDataToSend);
+        toast.success("Banner updated successfully");
+      } else {
+        await addBanner(formDataToSend);
+        toast.success("Banner added successfully");
+      }
+      setShowModal(false);
+      resetForm();
+      fetchBanners();
+      setIsSubmitting(false);
+    } catch (error) {
+      toast.error(error.response?.data?.message || "Operation failed");
+      setIsSubmitting(false);
+    }
+  };
+
+  const handleEditBanner = async (banner) => {
+     console.log(banner);
+    setEditingBanner(banner);
+    setFormData({
+      title: banner.title,
+      bannerFor: banner.bannerFor,
+      image: null,
+    });
+    setImagePreview(banner.image);
+    setShowModal(true);
+  };
+
+  const resetForm = () => {
+    setFormData({
+      title: "",
+      bannerFor: "",
+      image: null,
+    });
+    setImagePreview(null);
+    setEditingBanner(null);
+  };
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+
+    console.log(formData);
+
+  };
+  const handleCloseModal = () =>{
+console.log("close modal");
+    setShowModal(false);
+    setEditingBanner(null);
+    resetForm();
+  };
+
+  const handleDeleteBanner = async (id) => {
+    try {
+      await deleteBanner(id);
+      toast.success("Banner deleted successfully");
+      fetchBanners();
+    } catch (error) {
+      toast.error("Failed to delete banner");
+    }
+  };
   return (
     <>
       <PageHeader content="Banner" />
@@ -45,25 +149,30 @@ function Banner() {
             </tr>
           </thead>
           <tbody>
-            <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 border-gray-200 hover:bg-gray-50 dark:hover:bg-gray-600">
+            {banners?.map((banner) => (
+            <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 border-gray-200 hover:bg-gray-50 dark:hover:bg-gray-600" key={banner._id}>
+
               <td className="p-4">
-                {/* <img
-                  src="/images/images.jpg"
+                <img
+                  src={banner.image}
                   className="w-16 md:w-32 max-w-full max-h-full"
                   alt="Apple Watch"
-                /> */}
+                />
               </td>
               <td className="px-6 py-4 font-semibold text-gray-900 dark:text-white">
-                Apple Watch
+                {banner.title}
               </td>
               <td className="px-6 py-4 font-semibold text-gray-900 dark:text-white">
-                $599
+                {banner.bannerFor}
               </td>
               <td className="px-6 py-4 font-semibold text-gray-900 dark:text-white flex gap-2 ">
-                <FaTrash className="text-red-500 text-lg" />
-                <FaEdit className="text-blue-500 text-lg" />
+                <FaTrash className="text-red-500 text-lg" onClick={() => handleDeleteBanner(banner._id)}/>
+                <FaEdit className="text-blue-500 text-lg" onClick={() => handleEditBanner(banner)}/>
               </td>
             </tr>
+
+            ))}
+
           </tbody>
         </table>
       </div>
@@ -76,7 +185,7 @@ function Banner() {
                 {editingBanner ? "Edit Banner" : "Add New Banner"}
               </h2>
               <button
-                onClick={() => setShowModal(false)}
+                onClick={handleCloseModal}
                 className="text-gray-500 hover:text-gray-700"
               >
                 <svg
@@ -135,8 +244,8 @@ function Banner() {
                 </label>
                 <input
                   type="text"
-                  name="name"
-                  //   value={formData.name}
+                  name="title"
+                  value={formData.title}
                   onChange={handleInputChange}
                   className="w-full p-2 border border-gray-300 rounded-md"
                   required
@@ -147,10 +256,13 @@ function Banner() {
                   Banner For
                 </label>
                 <select
-                  name="banner for"
+                  name="bannerFor"
                   required
                   className="w-full p-2 border border-gray-300 rounded-md"
+                  onChange={handleInputChange}
+                  value={formData.bannerFor}
                 >
+                  <option value="" disabled >Select Banner For</option>
                   <option value="hero">Hero</option>
                   <option value="category">Category</option>
                   <option value="product">Product</option>

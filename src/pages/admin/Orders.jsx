@@ -376,7 +376,7 @@ function Orders() {
           {formatDate(order.createdAt)}
         </td>
         <td className="px-6 py-4">{order.user.phonenumber}</td>
-        <td className="px-6 py-4">{order.user.address || "N/A"}</td>
+        {/* <td className="px-6 py-4">{order.user.address || "N/A"}</td> */}
         <td className="px-6 py-4">
           <div className="space-y-1">
             {[

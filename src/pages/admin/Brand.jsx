@@ -23,10 +23,13 @@ function Brand() {
     name: "",
     description: "",
     image: null,
+    bannerImage: null,
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [imagePreview, setImagePreview] = useState(null);
+  const [bannerImagePreview, setBannerImagePreview] = useState(null);
   const fileInputRef = useRef(null);
+  const bannerFileInputRef = useRef(null);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [brandToDelete, setBrandToDelete] = useState(null);
   const [isDeleting, setIsDeleting] = useState(false);
@@ -85,6 +88,9 @@ function Brand() {
   const handleImageClick = () => {
     fileInputRef.current.click();
   };
+  const handleBannerImageClick = () => {
+    bannerFileInputRef.current.click();
+  };
 
   const handleImageChange = (e) => {
     const file = e.target.files[0];
@@ -97,6 +103,14 @@ function Brand() {
     }
   };
 
+  const handleBannerImageChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setFormData((prev) => ({ ...prev, bannerImage: file }));
+      setBannerImagePreview(URL.createObjectURL(file));
+    }
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
@@ -105,9 +119,14 @@ function Brand() {
       const formDataToSend = new FormData();
       formDataToSend.append("name", formData.name);
       formDataToSend.append("description", formData.description);
+
       if (formData.image) {
         formDataToSend.append("image", formData.image);
       }
+      if (formData.bannerImage) {
+        formDataToSend.append("bannerImage", formData.bannerImage);
+      }
+
 
       if (editingBrand) {
         await editBrand(editingBrand._id, formDataToSend);
@@ -132,8 +151,10 @@ function Brand() {
       name: brand.name,
       description: brand.description,
       image: null,
+      bannerImage: null,
     });
     setImagePreview(brand.image);
+    setBannerImagePreview(brand.bannerImage);
     setShowModal(true);
   };
 
@@ -142,9 +163,11 @@ function Brand() {
       name: "",
       description: "",
       image: null,
+      bannerImage: null,
     });
     setEditingBrand(null);
     setImagePreview(null);
+    setBannerImagePreview(null);
   };
 
   const handleCloseModal = () => {
@@ -237,6 +260,10 @@ function Brand() {
                   <th scope="col" className="px-6 py-3 bg-gray-50">
                     Brand Name
                   </th>
+                  <th scope="col" className="px-6 py-3 bg-gray-50">
+                    Banner Image
+                  </th>
+
 
                   <th scope="col" className="px-6 py-3 bg-gray-50">
                     Action
@@ -280,6 +307,15 @@ function Brand() {
                           )}
                           {brand.name}
                         </div>
+                      </td>
+                      <td className="px-6 py-4">
+                        {brand.bannerImage && (
+                          <img
+                            src={brand.bannerImage}
+                            alt={brand.name}
+                            className="w-10 h-10 object-cover rounded"
+                          />
+                        )}
                       </td>
                       <td className="px-6 py-4 flex gap-3">
                         <button
@@ -365,6 +401,28 @@ function Brand() {
                   className="hidden"
                 />
               </div>
+              <div>
+                <div className="mb-4">
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Banner Image
+                  </label>
+                  <div onClick={handleBannerImageClick} className="relative w-full h-48 border-2 border-dashed border-gray-300 rounded-lg flex items-center justify-center cursor-pointer hover:border-gray-400 transition-colors">
+                    {bannerImagePreview ? (
+                      <img src={bannerImagePreview} alt="Brand preview" className="w-full h-full object-contain rounded-lg" />
+                    ) : (
+                      <p className="text-gray-500">Click to upload image</p>
+                    )}
+                  </div>
+                  <input
+                    type="file"
+                    ref={bannerFileInputRef}
+                    onChange={handleBannerImageChange}
+                    accept="image/*"
+                    className="hidden"
+                  />
+                </div>
+              </div>
+
               <div className="mb-4">
                 <label className="block text-sm font-medium text-gray-700 mb-1">
                   Brand Name
