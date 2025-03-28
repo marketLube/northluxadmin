@@ -32,7 +32,6 @@ function Orders() {
     "onrefound",
   ];
 
-console.log(orderStats , "orderStats");
 
   // Move fetchData outside of useEffect so it can be reused
   const fetchData = async () => {
@@ -232,11 +231,10 @@ console.log(orderStats , "orderStats");
 
           {isOpen && !isStatusChangeDisabled && (
             <div
-              className="fixed rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5"
+              className="absolute rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5"
               style={{
                 zIndex: 50,
                 marginTop: "0.5rem",
-                transform: "translateY(-100%)",
                 minWidth: "150px",
               }}
             >

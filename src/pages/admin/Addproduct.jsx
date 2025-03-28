@@ -75,7 +75,7 @@ function Addproduct() {
           setCurrentVariant(variants[0]);
           setImages(variants[0].images);
           setSelectedVariantIndex(0);
-        }else{
+        } else {
           setImages(res.data.images);
         }
 
@@ -105,7 +105,7 @@ function Addproduct() {
       setEditMode(true);
       fetchProduct();
     }
-  }, [productId ]);
+  }, [productId]);
   // Data Fetching
   useEffect(() => {
     const fetchData = async () => {
@@ -164,12 +164,46 @@ function Addproduct() {
     const value = event.target.value;
     setSelectedVariant(value);
 
-    // Reset product data structure based on variant selection
     if (value === "noVariants") {
       setProductData((prev) => ({
         ...prev,
         variants: [],
       }));
+      setImages(productData.images);
+    } else if (value === "hasVariants") {
+      // Create first variant from existing product data
+
+      const firstVariant = {
+        sku: productData.sku || "",
+        attributes: {
+          title: "Default",
+          description: productData.description || "",
+        },
+        price: productData.price || "",
+        offerPrice: productData.offerPrice || "",
+        stock: productData.stock ? productData.stock.toString().toLowerCase() : "",
+        stockStatus: "inStock",
+        images: productData.images || [],
+      };
+console.log(firstVariant , "firstVariant");
+      // Update product data with the new variant
+      setProductData((prev) => ({
+        ...prev,
+        variants: [firstVariant],
+        // Clear single product fields
+        sku: "",
+        description: "",
+        price: "",
+        offerPrice: "",
+        stock: "",
+        images: [],
+      }));
+
+      // Set the current variant and show form
+      setCurrentVariant(firstVariant);
+      setImages(firstVariant.images);
+      setSelectedVariantIndex(0);
+      setShowVariantForm(true);
     }
 
     // Clear all errors when switching variant types
@@ -258,10 +292,16 @@ function Addproduct() {
       toast.success("Variant added successfully");
     }
 
-    resetVariantForm();
-    setShowVariantForm(false);
+    // Keep the form open and current variant selected when saving the first variant
+    if (productData.variants.length === 0) {
+      setSelectedVariantIndex(0);
+    } else {
+      resetVariantForm();
+      setShowVariantForm(false);
+      setSelectedVariantIndex(null);
+    }
+
     setVariantErrors({});
-    setSelectedVariantIndex(null);
   };
 
   const resetVariantForm = () => {
@@ -344,8 +384,12 @@ function Addproduct() {
     // formData.append("units", productData.units);
 
     if (selectedVariant === "hasVariants") {
+      console.log(productData.variants, "productData.variants");
       // For products with variants
       const formattedVariants = productData.variants.map((variant) => {
+        // Convert stock to number if it's a numeric string, otherwise use 0
+        const stockNumber = variant.stock ? parseInt(variant.stock, 10) : 0;
+
         const variantData = {
           sku: variant.sku,
           attributes: {
@@ -354,8 +398,8 @@ function Addproduct() {
           },
           price: variant.price,
           offerPrice: variant.offerPrice,
-          stock: variant.stock,
-          stockStatus: variant.stockStatus,
+          stock: stockNumber, // Use the converted number
+          stockStatus: variant.stockStatus.toLowerCase(), // Ensure correct enum case
         };
 
         if (variant._id) {
@@ -411,7 +455,9 @@ function Addproduct() {
       formData.append("sku", productData.sku);
       formData.append("price", productData.price);
       formData.append("offerPrice", productData.offerPrice);
-      formData.append("stock", productData.stock);
+      // Convert stock to number if it's a numeric string, otherwise use 0
+      const stockNumber = productData.stock ? parseInt(productData.stock, 10) : 0;
+      formData.append("stock", stockNumber);
 
       // Handle product images with indices
       images.forEach((image, index) => {
@@ -664,7 +710,6 @@ function Addproduct() {
                   fileInputs={fileInputs}
                   error={errors?.images}
                 />
-
               </div>
             </div>
           )}
