@@ -172,8 +172,6 @@ function Addproduct() {
       }));
     }
 
-    console.log(productData, "product data" , value ,"value");
-
     // Clear all errors when switching variant types
     setErrors({});
     setVariantErrors({});
