@@ -87,7 +87,7 @@ function Addproduct() {
           variants: variants,
           sku: !hasVariants ? res.data.sku : "",
           description: !hasVariants ? res.data.description : "",
-          units: res.data.units,
+          // units: res.data.units,
           price: !hasVariants ? res.data.price : "",
           offerPrice: !hasVariants ? res.data.offerPrice : "",
           stock: !hasVariants ? res.data.stock : "",
@@ -341,7 +341,7 @@ function Addproduct() {
     formData.append("brand", productData.brand);
     formData.append("category", productData.category);
     formData.append("label", productData.label);
-    formData.append("units", productData.units);
+    // formData.append("units", productData.units);
 
     if (selectedVariant === "hasVariants") {
       // For products with variants
@@ -507,11 +507,11 @@ function Addproduct() {
               </div>
 
               <div className="flex gap-2">
-                <UnitsSelect
+                {/* <UnitsSelect
                   handleChange={handleProductChange}
                   value={productData.units}
                   errors={errors}
-                />
+                /> */}
                 <LabelSelect
                   labels={formUtilites.labels}
                   handleChange={handleProductChange}

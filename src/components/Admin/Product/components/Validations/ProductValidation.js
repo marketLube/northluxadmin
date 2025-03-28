@@ -6,7 +6,7 @@ export const validateProduct = (productData, selectedVariant, images) => {
   if (!productData.brand) errors.brand = "Brand is required";
   if (!productData.category) errors.category = "Category is required";
   if (!productData.label) errors.label = "Label is required";
-  if (!productData.units) errors.units = "Units is required";
+  // if (!productData.units) errors.units = "Units is required";
 
   // Validate variant selection
   if (!selectedVariant) {
