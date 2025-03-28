@@ -32,6 +32,8 @@ function Orders() {
     "onrefound",
   ];
 
+console.log(orderStats , "orderStats");
+
   // Move fetchData outside of useEffect so it can be reused
   const fetchData = async () => {
     try {
@@ -461,7 +463,7 @@ function Orders() {
                   />
                   <Ordercards
                     data="Processing Orders"
-                    count={orderStats.statusCounts?.processing || 0}
+                    count={orderStats.statusCounts?.processed || 0}
                     color="#3B82F6"
                   />
                   <Ordercards
