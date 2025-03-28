@@ -274,6 +274,7 @@ function Orders() {
   };
 
   const TableRow = ({ order }) => {
+    console.log(order , "order");
     const [paymentStatus, setPaymentStatus] = useState(
       order.paymentStatus || "pending"
     );
@@ -375,8 +376,8 @@ function Orders() {
         <td className="px-6 py-4 whitespace-nowrap">
           {formatDate(order.createdAt)}
         </td>
-        <td className="px-6 py-4">{order.user.phonenumber}</td>
-        {/* <td className="px-6 py-4">{order.user.address || "N/A"}</td> */}
+        <td className="px-6 py-4">{order?.user?.phonenumber}</td>
+        <td className="px-6 py-4">{order?.deliveryAddress?.pincode || "N/A"}</td>
         <td className="px-6 py-4">
           <div className="space-y-1">
             {[

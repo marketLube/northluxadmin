@@ -80,14 +80,14 @@ function LoginComponent({ role }) {
                   disabled={isLoading}
                 />
               </div>
-              <div className="flex items-center justify-center">
+              {/* <div className="flex items-center justify-center">
                 <a
                   href="#"
                   className="text-sm font-medium text-blue-600 hover:underline dark:text-primary-500"
                 >
                   Forgot password?
                 </a>
-              </div>
+              </div> */}
 
               <button
                 type="button"

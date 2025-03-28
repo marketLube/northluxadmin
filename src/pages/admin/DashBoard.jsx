@@ -11,6 +11,8 @@ function DashBoard() {
   const [topProudcts, setTopProducts] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
+
+
   useEffect(() => {
     fetchDashboardData();
   }, []);
@@ -38,11 +40,6 @@ function DashBoard() {
     );
   }
 
-  const AnalysisData = [
-    { data: "New Orders", color: "#00BA9D", count: "11" },
-    { data: "Total Deliveries", color: "#FF5470", count: "5289" },
-    { data: "Total Revenue", color: "#035ECF", count: "₹1,52,310" },
-  ];
   return (
     <div className="space-y-5 px-1 md:px-5 md:space-y-10">
       <PageHeader content="DashBoard" />
