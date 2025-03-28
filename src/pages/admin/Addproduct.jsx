@@ -62,7 +62,8 @@ function Addproduct() {
         const res = await getProductById(productId);
         let hasVariants = false;
         let variants = [];
-        setImages(res.data.images);
+        console.log(res.data);
+
         if (res.data.variants.length > 0) {
           hasVariants = true;
           setSelectedVariant("hasVariants");
@@ -74,6 +75,8 @@ function Addproduct() {
           setCurrentVariant(variants[0]);
           setImages(variants[0].images);
           setSelectedVariantIndex(0);
+        }else{
+          setImages(res.data.images);
         }
 
         const productData = {
@@ -102,7 +105,7 @@ function Addproduct() {
       setEditMode(true);
       fetchProduct();
     }
-  }, [productId]);
+  }, [productId ]);
   // Data Fetching
   useEffect(() => {
     const fetchData = async () => {
@@ -168,6 +171,8 @@ function Addproduct() {
         variants: [],
       }));
     }
+
+    console.log(productData, "product data" , value ,"value");
 
     // Clear all errors when switching variant types
     setErrors({});
@@ -661,6 +666,7 @@ function Addproduct() {
                   fileInputs={fileInputs}
                   error={errors?.images}
                 />
+
               </div>
             </div>
           )}
