@@ -181,11 +181,17 @@ function Addproduct() {
         },
         price: productData.price || "",
         offerPrice: productData.offerPrice || "",
-        stock: productData.stock ? productData.stock.toString().toLowerCase() : "",
+        stock: productData.stock
+          ? productData.stock.toString().toLowerCase()
+          : "",
         stockStatus: "inStock",
         images: productData.images || [],
       };
-console.log(firstVariant , "firstVariant");
+
+      console.log(productData, "productData");
+      console.log(firstVariant, "firstVariant");
+      console.log(images, "images");
+
       // Update product data with the new variant
       setProductData((prev) => ({
         ...prev,
@@ -253,6 +259,9 @@ console.log(firstVariant , "firstVariant");
   };
 
   const handleSaveVariant = () => {
+
+    console.log(productData, "productData");
+    console.log(images, "images");
     const variantData = {
       _id: currentVariant._id,
       sku: currentVariant.sku,
@@ -334,6 +343,8 @@ console.log(firstVariant , "firstVariant");
       setVariantErrors({});
     }
   };
+
+  console.log(selectedVariant === "hasVariants", "selectedVariant");
 
   const handlePublish = async () => {
     // Check if variants are required but none are added
@@ -444,11 +455,18 @@ console.log(firstVariant , "firstVariant");
                   `variants[${variantIndex}][images][${imageIndex}]`,
                   image
                 );
+              } else {
+                formData.append(
+                  `variants[${variantIndex}][images][${imageIndex}]`,
+                  image
+                );
               }
             }
           );
         }
+
       });
+
     } else {
       // For products without variants
       formData.append("description", productData.description);
@@ -456,7 +474,9 @@ console.log(firstVariant , "firstVariant");
       formData.append("price", productData.price);
       formData.append("offerPrice", productData.offerPrice);
       // Convert stock to number if it's a numeric string, otherwise use 0
-      const stockNumber = productData.stock ? parseInt(productData.stock, 10) : 0;
+      const stockNumber = productData.stock
+        ? parseInt(productData.stock, 10)
+        : 0;
       formData.append("stock", stockNumber);
 
       // Handle product images with indices

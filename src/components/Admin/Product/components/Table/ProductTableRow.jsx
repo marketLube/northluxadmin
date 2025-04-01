@@ -26,7 +26,9 @@ const ProductTableRow = ({ product }) => {
         scope="row"
         className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
       >
-        {product?.name}
+        {product?.name?.split("").length > 30
+          ? product?.name?.split(" ").slice(0, 4).join(" ") + "..."
+          : product?.name}
       </th>
       <td className="px-6 py-4">{product?.brand?.name}</td>
       <td className="px-6 py-4">{product?.stock}</td>
