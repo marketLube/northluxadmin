@@ -188,10 +188,6 @@ function Addproduct() {
         images: productData.images || [],
       };
 
-      console.log(productData, "productData");
-      console.log(firstVariant, "firstVariant");
-      console.log(images, "images");
-
       // Update product data with the new variant
       setProductData((prev) => ({
         ...prev,
@@ -258,7 +254,8 @@ function Addproduct() {
     }
   };
 
-  const handleSaveVariant = () => {
+
+const handleSaveVariant = () => {
 
     console.log(productData, "productData");
     console.log(images, "images");
@@ -366,6 +363,7 @@ function Addproduct() {
       selectedVariant,
       images
     );
+
     if (Object.keys(validationErrors).length > 0) {
       setErrors(validationErrors);
       if (validationErrors.variants) {
