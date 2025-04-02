@@ -42,7 +42,7 @@ function DashBoard() {
 
   return (
     <div className="space-y-5 px-1 md:px-5 md:space-y-10">
-      <PageHeader content="DashBoard" />
+      <PageHeader content="Dashboard" />
 
       {/* quick analysis */}
       <div className="flex flex-col lg:flex-row items-center justify-evenly  py-3 bg-white md:p-4">
