@@ -52,7 +52,7 @@ function Products() {
         const res = await searchProducts({
           keyword,
           page: currentPage,
-          limit: 3,
+          limit: 10,
         });
         setProducts(res?.data?.data?.products);
         setTotalPages(res?.data?.data?.totalPages);
@@ -80,7 +80,7 @@ function Products() {
       const res = await searchProducts({
         keyword,
         page,
-        limit: 3,
+        limit: 10,
       });
       setProducts(res?.data?.data?.products);
       setTotalPages(res?.data?.data?.totalPages);

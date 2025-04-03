@@ -176,7 +176,7 @@ function Addproduct() {
       const firstVariant = {
         sku: productData.sku || "",
         attributes: {
-          title: "Default",
+          title: "",
           description: productData.description || "",
         },
         price: productData.price || "",
@@ -272,6 +272,11 @@ const handleSaveVariant = () => {
       stockStatus: currentVariant.stockStatus,
       images: [...images],
     };
+    console.log(variantData.stockStatus, "variantData");
+    if(variantData.stockStatus === "outofstock" && variantData.stock > 0){
+      toast.error("Stock cannot be greater than 0 when stock status is out of stock");
+      return;
+    }
 
     // Validate variant before saving
     const validationErrors = validateVariant(variantData);
@@ -789,6 +794,7 @@ const handleSaveVariant = () => {
                         name="title"
                         value={currentVariant.attributes.title}
                         onChange={handleVariantChange}
+                        placeholder="Please enter variant title"
                         className={`bg-gray-50 border ${
                           variantErrors?.title
                             ? "border-red-500"
