@@ -14,6 +14,7 @@ function AdminLayout() {
     { name: "Reviews", path: "review" },
     { name: "Customers", path: "customer" },
     { name: "Banners", path: "banner" },
+    { name: "Offer Banners", path: "offer-banner" },
   ];
   const navigate = useNavigate();
 
