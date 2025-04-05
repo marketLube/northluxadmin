@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from "react";
 import PageHeader from "../../components/Admin/PageHeader";
 import { FaTrash, FaEdit, FaCamera } from "react-icons/fa";
 import { toast } from "react-toastify";
-import { addOfferBanner, editOfferBanner, deleteOfferBanner, getOfferBanners } from "../../sevices/offerBannerApis";
+import { addOfferBanner, editOfferBanner, deleteOfferBanner, getOfferBanners } from "../../sevices/OfferBannerApis";
 import ConfirmationModal from "../../components/Admin/ConfirmationModal";
 import { validateOfferBannerField, validateOfferBannerForm } from "../../utils/validations/offerBannerValidation";
 

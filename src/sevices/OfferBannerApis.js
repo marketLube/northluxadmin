@@ -27,4 +27,3 @@ export const getOfferBanners = async () => {
   const response = await axiosInstance.get("/offerBanner");
   return response.data;
 };
-//
