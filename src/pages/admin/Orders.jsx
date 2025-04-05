@@ -33,6 +33,8 @@ function Orders() {
   ];
 
   console.log(dateRange , "date");
+  console.log(dateRange , "date");
+
 
 
   // Move fetchData outside of useEffect so it can be reused
