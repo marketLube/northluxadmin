@@ -13,7 +13,10 @@ import LoadingSpinner from "../../components/spinner/LoadingSpinner";
 // CouponForm Component
 const CouponForm = ({ onSubmit, initialData, isSubmitting }) => {
   const [formData, setFormData] = useState(
-    initialData || {
+    initialData ? {
+      ...initialData,
+      expiryDate: new Date(initialData.expiryDate).toISOString().split('T')[0]
+    } : {
       code: "",
       discountType: "percentage",
       discountAmount: "",
@@ -54,6 +57,11 @@ const CouponForm = ({ onSubmit, initialData, isSubmitting }) => {
       }
     }
   };
+
+  // Get tomorrow's date in YYYY-MM-DD format
+  const tomorrow = new Date();
+  tomorrow.setDate(tomorrow.getDate() + 1);
+  const minDate = tomorrow.toISOString().split('T')[0];
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
@@ -174,6 +182,7 @@ const CouponForm = ({ onSubmit, initialData, isSubmitting }) => {
             onChange={(e) =>
               setFormData({ ...formData, expiryDate: e.target.value })
             }
+            min={minDate}
             className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2"
             required
           />

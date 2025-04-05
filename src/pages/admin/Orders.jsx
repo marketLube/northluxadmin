@@ -32,6 +32,8 @@ function Orders() {
     "onrefound",
   ];
 
+  console.log(dateRange , "date");
+
 
   // Move fetchData outside of useEffect so it can be reused
   const fetchData = async () => {
@@ -42,8 +44,12 @@ function Orders() {
       let queryParams = [];
 
       if (startDate && endDate) {
-        queryParams.push(`startDate=${startDate.toISOString()}`);
-        queryParams.push(`endDate=${endDate.toISOString()}`);
+        // Format dates to start and end of day in UTC
+        const formattedStartDate = new Date(startDate.setHours(0, 0, 0, 0)).toISOString();
+        const formattedEndDate = new Date(endDate.setHours(23, 59, 59, 999)).toISOString();
+
+        queryParams.push(`startDate=${formattedStartDate}`);
+        queryParams.push(`endDate=${formattedEndDate}`);
       }
 
       if (selectedCategory) {

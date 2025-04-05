@@ -1,6 +1,7 @@
 import { axiosInstance } from "../axios/axiosInstance";
 
 export const getOrders = async (queryParams = "") => {
+console.log(queryParams , "query");
   return axiosInstance
     .get(`/order/get-orders${queryParams}`)
     .then((res) => res.data)
